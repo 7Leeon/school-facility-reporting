@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#4a0b19">
+<meta name="description" content="FixIt Campus: school facility reporting and maintenance management for Northwestern Visayan Colleges, Kalibo, Aklan">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="FixIt Campus">
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<title>FixIt Campus | Northwestern Visayan Colleges</title>
+<link rel="stylesheet" href="css/styles.css">
+<script>
+/* Logo chain: assets/nvc-logo.png (your copy) -> logo on the official NVC site -> letter fallback */
+function lgErr(i){if(i.dataset.s==="0"){i.dataset.s="1";i.src="https://nvc.edu.ph/wp-content/uploads/2024/12/logo.png"}else{i.onerror=null;var s=document.createElement("span");s.className="logo";s.textContent="N";i.replaceWith(s)}}
+</script>
+</head>
+<body>
+<div id="splash"><img class="lg big" alt="Northwestern Visayan Colleges logo" src="assets/nvc-logo.png" data-s="0" onerror="lgErr(this)"><h1>FixIt Campus</h1><p>Northwestern Visayan Colleges</p><div class="ld"></div></div>
+<div id="auth"></div>
+<div id="app" style="display:none">
+ <aside id="side">
+  <div class="sb-brand"><img class="lg" alt="NVC logo" src="assets/nvc-logo.png" data-s="0" onerror="lgErr(this)"><div><b>FixIt Campus</b><span>Northwestern Visayan Colleges</span></div></div>
+  <nav class="tabs" id="tabs" aria-label="Main navigation"></nav>
+  <button id="col" onclick="toggleSide()" aria-label="Collapse or expand the sidebar">&#8596; <span>Collapse</span></button>
+ </aside>
+ <div id="main">
+  <header class="top">
+   <div class="t-brand"><img class="lg" alt="NVC logo" src="assets/nvc-logo.png" data-s="0" onerror="lgErr(this)"><div><b>FixIt Campus</b><span>Northwestern Visayan Colleges</span></div></div>
+   <h1 id="ptitle"></h1>
+   <div class="t-right"><div class="chipu"><b id="uname"></b><span id="urole"></span></div><button class="out" onclick="logout()">Log out</button></div>
+  </header>
+  <section class="banner" role="img" aria-label="Northwestern Visayan Colleges campus banner">
+   <div class="bt"><small>NORTHWESTERN VISAYAN COLLEGES &middot; KALIBO, AKLAN</small><h2>Welcome to FixIt Campus</h2><p>School Facility Reporting and Maintenance Management</p></div>
+  </section>
+  <main id="content">
+<section class="view on" id="v-home">
+ <div class="stats" id="stats"></div><div id="note"></div>
+ <h2>Completed tasks</h2>
+ <input class="search" id="q" placeholder="Search by issue, room, building or tracking code" aria-label="Search completed tasks" oninput="renderFeed()">
+ <div class="chips" id="chips"></div><div id="feed"></div>
+</section>
+<section class="view" id="v-new"><h2>New report</h2><div class="wiz" id="wiz"></div><div id="wbody"></div></section>
+<section class="view" id="v-track"><h2>Track a report</h2><div class="card"><label for="tc" style="margin-top:0">Tracking code</label><input id="tc" placeholder="SF-1001"><button class="btn" onclick="lookup()">Find report</button></div><div id="tres"></div><h3>My reports</h3><div id="mine"></div></section>
+<section class="view" id="v-admin"><div class="stats" id="astats"></div><div id="abanner"></div><h2>Issue queue</h2>
+ <div class="tools"><input class="search" id="aq" placeholder="Search code, issue, room, building or student" aria-label="Search the issue queue" oninput="render()"></div>
+ <div class="chips" id="achips" style="margin-top:10px"></div><div id="queue"></div></section>
+<section class="view" id="v-users"><h2>Student accounts</h2><p class="meta">Review each school ID photo, then verify or reject the account. Students can only file reports after verification.</p><div id="ulist"></div></section>
+<section class="view" id="v-staff"><h2>Maintenance team</h2>
+ <div class="card"><h3>Add maintenance staff</h3><div class="two"><div><label for="sn">Name</label><input id="sn"><div class="fe" id="e_sn" role="alert"></div></div><div><label for="sz">Zone</label><select id="sz"><option>A</option><option>B</option><option>C</option></select></div><div><label for="sc">Capacity (active tasks)</label><input id="sc" type="number" min="1" max="20" value="4"><div class="fe" id="e_sc" role="alert"></div></div></div><span class="lb">Skills</span><div id="sk"></div><div class="fe" id="e_sk" role="alert"></div><button class="btn s" onclick="addStaff()">Add staff</button></div>
+ <div id="staffl"></div>
+<div class="card"><h2>Algorithm 1: Matching</h2><p>Each available staff member gets a score from 0 to 100: <b>50%</b> skill in the category, <b>30%</b> free capacity, <b>20%</b> zone closeness. The highest score is assigned. Staff at their workload limit or marked inactive are skipped. With no match, the issue stays Pending and is matched again, most urgent first, when capacity frees up.</p></div>
+<div class="card"><h2>Algorithm 2: Status tracking</h2><p>A state machine: Pending, Assigned, In Progress, Resolved, Closed. Only valid moves are allowed, a Resolved issue can be reopened, every change is time-stamped, and an urgency deadline (4h, 24h, 72h, 120h) flags overdue work.</p></div></section>
+  </main>
+ </div>
+</div>
+<div class="sheet" id="sheet" onclick="if(event.target===this)closeS()" role="dialog" aria-modal="true" aria-label="Details"><div id="sbody"></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="js/app.js"></script>
+</body>
+</html>
